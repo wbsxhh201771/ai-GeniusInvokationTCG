@@ -1,0 +1,3 @@
+C:\Users\PC\Desktop\CRH datacode\yolov7-pytorch-master\VOCdevkit/VOC2007/JPEGImages/013.jpg 617,588,870,934,0
+C:\Users\PC\Desktop\CRH datacode\yolov7-pytorch-master\VOCdevkit/VOC2007/JPEGImages/019.jpg 640,626,844,932,0
+C:\Users\PC\Desktop\CRH datacode\yolov7-pytorch-master\VOCdevkit/VOC2007/JPEGImages/022.jpg 621,619,853,958,0
