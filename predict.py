@@ -7,7 +7,7 @@ import time
 import cv2
 import numpy as np
 from PIL import Image
-
+import grabscreen
 from yolo import YOLO, YOLO_ONNX
 
 if __name__ == "__main__":
@@ -20,15 +20,16 @@ if __name__ == "__main__":
     #   'heatmap'           表示进行预测结果的热力图可视化，详情查看下方注释。
     #   'export_onnx'       表示将模型导出为onnx，需要pytorch1.7.1以上。
     #   'predict_onnx'      表示利用导出的onnx模型进行预测，相关参数的修改在yolo.py_423行左右处的YOLO_ONNX
-    #----------------------------------------------------------------------------------------------------------#
-    mode = "predict"
+    #   'screen'            表示利用实时的屏幕图像进行检测
+    #    #----------------------------------------------------------------------------------------------------------#
+    mode = "screen"
     #-------------------------------------------------------------------------#
     #   crop                指定了是否在单张图片预测后对目标进行截取
     #   count               指定了是否进行目标的计数
     #   crop、count仅在mode='predict'时有效
     #-------------------------------------------------------------------------#
     crop            = False
-    count           = False
+    count           = True
     #----------------------------------------------------------------------------------------------------------#
     #   video_path          用于指定视频的路径，当video_path=0时表示检测摄像头
     #                       想要检测视频，则设置如video_path = "xxx.mp4"即可，代表读取出根目录下的xxx.mp4文件。
@@ -142,7 +143,25 @@ if __name__ == "__main__":
             print("Save processed video to the path :" + video_save_path)
             out.release()
         cv2.destroyAllWindows()
-        
+    elif mode == "screen":
+        while(True):
+            frame = grabscreen.grab_screen()
+            frame = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
+            # resize画面大小（加速检测）
+            frame = cv2.resize(frame,(416,277))
+            # 转变成Image
+            frame = Image.fromarray(np.uint8(frame))
+            # 进行检测
+            frame = np.array(yolo.detect_image(frame))
+            # RGBtoBGR满足opencv显示格式
+            frame = cv2.cvtColor(frame,cv2.COLOR_RGB2BGR)
+            cv2.imshow('window1',frame)
+
+            if cv2.waitKey(5) & 0xFF == ord('q'):
+                break
+        cv2.waitKey()# 视频结束后，按任意键退出
+        cv2.destroyAllWindows()
+    
     elif mode == "fps":
         img = Image.open(fps_image_path)
         tact_time = yolo.get_FPS(img, test_interval)
