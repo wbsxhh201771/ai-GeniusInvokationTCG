@@ -6,3 +6,5 @@
 update2023.7.8  初步实现屏幕识别召唤物以及元素
 模型权重下载链接：https://pan.baidu.com/s/1NJu7y4wqzjSzvOIGbvsFwg?pwd=7q5i 
 提取码：7q5i
+训练集下载链接：https://pan.baidu.com/s/15RCa5IoRPsROqSfrpQxOiw?pwd=6nma
+提取码：6nma
